@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "api/kanban.js": {
+      "memory": 128,
+      "maxDuration": 10
+    }
+  }
+}
