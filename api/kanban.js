@@ -1,6 +1,6 @@
 export default async function handler(req, res) {
   // Allow requests from your portfolio only
-  res.setHeader('Access-Control-Allow-Origin', 'https://RaeleneV.github.io');
+  res.setHeader('Access-Control-Allow-Origin', 'https://raelenev.github.io');
   res.setHeader('Access-Control-Allow-Methods', 'POST');
 
   if (req.method === 'OPTIONS') {
