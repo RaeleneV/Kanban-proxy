@@ -4,21 +4,36 @@
    File location in repo: api/kanban.js
    ============================================ */
 
-export default async function handler(req, res) {
+const ALLOWED_ORIGINS = [
+  'https://raelenev.github.io',
+  'https://RaeleneV.github.io',
+];
 
-  /* Set CORS headers — allows GitHub Pages origin */
-  res.setHeader('Access-Control-Allow-Origin', '*');
+export default async function handler(req, res) {
+  const origin = (req.headers.origin || '').toLowerCase().replace(/\/$/, '');
+  const isAllowed = ALLOWED_ORIGINS.some(o => o.toLowerCase() === origin);
+  const responseOrigin = isAllowed ? req.headers.origin : ALLOWED_ORIGINS[0];
+
+  /* CORS headers on every response */
+  res.setHeader('Access-Control-Allow-Origin', responseOrigin);
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('Access-Control-Max-Age', '86400');
+  res.setHeader('Vary', 'Origin');
 
-  /* Handle OPTIONS preflight immediately */
+  /* Handle preflight immediately */
   if (req.method === 'OPTIONS') {
     res.status(204).end();
     return;
   }
 
-  /* Only allow POST */
+  /* Block disallowed origins */
+  if (!isAllowed) {
+    res.status(403).json({ error: 'Forbidden' });
+    return;
+  }
+
+  /* Only POST allowed */
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
     return;
@@ -73,7 +88,6 @@ export default async function handler(req, res) {
     }
 
     const data = await ghRes.json();
-
     if (data.errors) {
       res.status(502).json({ error: 'GitHub GraphQL error' });
       return;
