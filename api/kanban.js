@@ -7,7 +7,7 @@
 /* Explicitly list every allowed origin — no wildcards */
 const ALLOWED_ORIGINS = [
   'https://RaeleneV.github.io',
-  'https://raelenv.github.io',
+  'https://raelenev.github.io',
 ];
 
 export default async function handler(req, res) {
