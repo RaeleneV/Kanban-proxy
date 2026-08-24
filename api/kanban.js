@@ -6,6 +6,7 @@
 
 const ALLOWED_ORIGINS = [
   'https://raelenev.github.io',
+  'https://raelenv.github.io',
   'https://RaeleneV.github.io',
 ];
 
